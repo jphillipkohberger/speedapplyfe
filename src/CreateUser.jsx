@@ -1,4 +1,3 @@
-// src/components/CreateUser.jsx
 import { useState } from 'react';
 
 function CreateUser() {
@@ -7,14 +6,13 @@ function CreateUser() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Event handler for form submission
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
-    // Here, you would typically send this data to a backend API
+    // @TODO Send data to API
     console.log('User created:', { username, email, password });
 
-    // Clear the form after submission (optional)
+    // Clear the form after submission
     setUsername('');
     setEmail('');
     setPassword('');
@@ -22,7 +20,7 @@ function CreateUser() {
 
   return (
     <div class="form-container">
-      <h1>Create User</h1>
+      <h1>Create SpeedApply User</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>

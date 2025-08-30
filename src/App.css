@@ -69,3 +69,7 @@ input[type="password"]:focus {
 .submit-btn:hover {
   background-color: #0056b3;
 }
+
+.CreateSpeedApplyUser {
+  font-size: 3rem;
+}
