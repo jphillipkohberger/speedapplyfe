@@ -2,18 +2,55 @@ import { useState } from 'react';
 
 function CreateUser() {
   // State variables to store form input values
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [UserName, setUserName] = useState('');
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
+  const validateForm = () => {
+    let newErrors = {};
+    if (!UserName) newErrors.UserName = 'UserName is required';
+    if (!Email) newErrors.Email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(Email)) newErrors.Email = 'Email is invalid';
+    if (!Password) newErrors.Password = 'Password is required';
+    else if (Password.length < 6) newErrors.Password = 'Password must be at least 6 characters';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // @TODO Send data to API
-    console.log('User created:', { username, email, password });
+    if (validateForm()) {
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ UserName, Email, Password })
+        };
+
+        console.log(requestOptions);
+
+        fetch('http://localhost:32770/Api/Users/Create', requestOptions)
+          .then(response => {
+            if (!response.ok) {
+              console.log(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    }
 
     // Clear the form after submission
-    setUsername('');
+    setUserName('');
     setEmail('');
     setPassword('');
   };
@@ -21,36 +58,36 @@ function CreateUser() {
   return (
     <div class="form-container">
       <h1>Create SpeedApply User</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} novalidate>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="UserName">UserName:</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+            id="UserName"
+            value={UserName}
+            onChange={(e) => setUserName(e.target.value)}
           />
+          <p className="error">{errors.UserName}</p>
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="Email">Email:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
+            type="text"
+            id="Email"
+            value={Email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
+          <p className="error">{errors.Email}</p>
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="Password">Password:</label>
           <input
-            type="password"
-            id="password"
-            value={password}
+            type="Password"
+            id="Password"
+            value={Password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
+          <p className="error">{errors.Password}</p>
         </div>
         <button class="submit-btn" type="submit">Create User</button>
       </form>

@@ -71,5 +71,14 @@ input[type="password"]:focus {
 }
 
 .CreateSpeedApplyUser {
-  font-size: 3rem;
+  font-size: 72px !important;
+  text-align: center;
+}
+
+.error {
+  font-size: 1rem;
+  color: red;
+  height:20px;
+  min-height: 20px;
+  margin: 2px;
 }
