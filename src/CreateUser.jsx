@@ -34,7 +34,7 @@ function CreateUser() {
 
         console.log(requestOptions);
 
-        fetch('http://localhost:32770/Api/Users/Create', requestOptions)
+        fetch('http://localhost:32772/Api/Users/Create', requestOptions)
           .then(response => {
             if (!response.ok) {
               console.log(`HTTP error! status: ${response.status}`);
