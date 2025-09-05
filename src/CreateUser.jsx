@@ -2,14 +2,12 @@ import { useState } from 'react';
 
 function CreateUser() {
   // State variables to store form input values
-  const [UserName, setUserName] = useState('');
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
     let newErrors = {};
-    if (!UserName) newErrors.UserName = 'UserName is required';
     if (!Email) newErrors.Email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(Email)) newErrors.Email = 'Email is invalid';
     if (!Password) newErrors.Password = 'Password is required';
@@ -23,6 +21,8 @@ function CreateUser() {
     event.preventDefault();
 
     if (validateForm()) {
+
+        const UserName = Email;
 
         const requestOptions = {
             method: 'POST',
@@ -50,7 +50,6 @@ function CreateUser() {
     }
 
     // Clear the form after submission
-    setUserName('');
     setEmail('');
     setPassword('');
   };
@@ -59,16 +58,6 @@ function CreateUser() {
     <div className="form-container">
       <h1>Create SpeedApply User</h1>
       <form onSubmit={handleSubmit} noValidate>
-        <div>
-          <label htmlFor="UserName">UserName:</label>
-          <input
-            type="text"
-            id="UserName"
-            value={UserName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-          <p className="error">{errors.UserName}</p>
-        </div>
         <div>
           <label htmlFor="Email">Email:</label>
           <input
