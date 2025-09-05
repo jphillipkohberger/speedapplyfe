@@ -32,9 +32,9 @@ function CreateUser() {
             body: JSON.stringify({ UserName, Email, Password })
         };
 
-        console.log(requestOptions);
+        console.log(import.meta.env.VITE_API_URL);
 
-        fetch('http://localhost:32772/Api/Users/Create', requestOptions)
+        fetch(import.meta.env.VITE_API_URL + '/Api/Users/Create', requestOptions)
           .then(response => {
             if (!response.ok) {
               console.log(`HTTP error! status: ${response.status}`);
@@ -56,9 +56,9 @@ function CreateUser() {
   };
 
   return (
-    <div class="form-container">
+    <div className="form-container">
       <h1>Create SpeedApply User</h1>
-      <form onSubmit={handleSubmit} novalidate>
+      <form onSubmit={handleSubmit} noValidate>
         <div>
           <label htmlFor="UserName">UserName:</label>
           <input
@@ -89,7 +89,7 @@ function CreateUser() {
           />
           <p className="error">{errors.Password}</p>
         </div>
-        <button class="submit-btn" type="submit">Create User</button>
+        <button className="submit-btn" type="submit">Create User</button>
       </form>
     </div>
   );
