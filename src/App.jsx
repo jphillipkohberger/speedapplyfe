@@ -14,10 +14,10 @@ function App() {
       <title>SpeedApply</title>
       {isHomePage && (
         <>
-          <p>
+          <p className="parent-link">
           <Link className="CreateSpeedApplyUser" to="/CreateUser">Create SpeedApply User</Link>
           </p>
-          <p>
+          <p className="parent-link">
           <Link className="LoginSpeedApplyUser" to="/Login">Login SpeedApply User</Link>
           </p>
         </>

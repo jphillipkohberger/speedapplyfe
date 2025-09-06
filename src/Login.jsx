@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 const Login = () => {
   // State variables to store form input values
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -23,8 +23,36 @@ const Login = () => {
     if (validateForm()) {
 
       // Send these credentials to API
-      console.log('Email:', email);
-      console.log('Password:', password);
+      console.log('Email:', Email);
+      console.log('Password:', Password);
+
+      const UserName = Email;
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ UserName, Email, Password })
+        };
+
+        console.log('Request Options:', requestOptions);
+
+        console.log(import.meta.env.VITE_API_URL);
+
+        fetch(import.meta.env.VITE_API_URL + '/Api/Users/Login', requestOptions)
+          .then(response => {
+            if (!response.ok) {
+              console.log(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
     }
 
     // Clear the form fields after submission
@@ -41,7 +69,7 @@ const Login = () => {
           <input
             type="email"
             id="email"
-            value={email}
+            value={Email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -52,7 +80,7 @@ const Login = () => {
           <input
             type="password"
             id="password"
-            value={password}
+            value={Password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
