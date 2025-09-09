@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import './App.css'
 import CreateUser from './CreateUser';
 import Login from './Login';
-import Login from './Dashboard';
+import Dashboard from './Dashboard';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 function App() {
   const location = useLocation();
@@ -24,8 +24,16 @@ function App() {
         </>
       )}
       <Routes>
-        <Route path="/Login" exact element={<Login />}/>
         <Route path="/CreateUser" exact element={<CreateUser />}/>
+        <Route path="/Login" exact element={<Login />}/>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </>
   )

@@ -1,10 +1,19 @@
 import { useState } from 'react';
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from "./AuthProvider.jsx";
 
 const Login = () => {
+  const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   // State variables to store form input values
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+
+  // If already logged in, skip login page
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const validateForm = () => {
     let newErrors = {};
@@ -26,33 +35,13 @@ const Login = () => {
       console.log('Email:', Email);
       console.log('Password:', Password);
 
-      const UserName = Email;
-
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ UserName, Email, Password })
-        };
-
-        console.log('Request Options:', requestOptions);
-
-        console.log(import.meta.env.VITE_API_URL);
-
-        fetch(import.meta.env.VITE_API_URL + '/Api/Users/Login', requestOptions)
-          .then(response => {
-            if (!response.ok) {
-              console.log(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+      try {
+        login(Email, Password);
+        navigate("/Dashboard", { replace: true });
+      } catch (err) {
+        errors.Password = 'Login Failed';
+        setErrors(errors);
+      }
     }
 
     // Clear the form fields after submission

@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({ fastRefresh: false })],
   server: {
-    port: 8080, // Change this to your desired port
+    port: 8082, // Change this to your desired port
   },
 })
