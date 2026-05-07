@@ -19,7 +19,7 @@ function CreateUser() {
     let newErrors = {};
     if (!Email) newErrors.Email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(Email)) newErrors.Email = 'Email is invalid';
-    if (!Password) newErrors.Password = 'Password is required';
+    if (!Password) newErrors.Password = 'Password is  required';
     else if (Password.length < 6) newErrors.Password = 'Password must be at least 6 characters';
     
     setErrors(newErrors);
