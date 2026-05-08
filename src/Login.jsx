@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.jsx";
-// need to install correct fontawesome and how to import specifc icons referenced below
-/*import { FaEye, FaEyeSlash } from '@fortawesome/react-fontawesome';*/
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
@@ -11,12 +11,11 @@ const Login = () => {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  /*
+  
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  */
 
   // If already logged in, skip login page
   if (isAuthenticated) {
@@ -72,14 +71,7 @@ const Login = () => {
           <p className="error">{errors.Email}</p>
         </div>
         <div style={{ position: 'relative', width: '400px' }}>
-          <label htmlFor="Password">Password:</label>
-          <input
-            type="Password"
-            id="Password"
-            value={Password}
-            onChange={(e) => setPassword(e.target.value)}
-          /> 
-        {/*           
+          <label htmlFor="Password">Password:</label>         
           <input
             type={showPassword ? "text" : "password"}
             id="Password"
@@ -93,14 +85,13 @@ const Login = () => {
             style={{ 
               position: 'absolute', 
               right: '10px', 
-              top: '50%', 
+              top: '55%', 
               transform: 'translateY(-50%)', 
               cursor: 'pointer' 
             }}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
           </span> 
-          */}
           <p className="error">{errors.Password}</p>
         </div>
         <button className="submit-btn" type="submit">Login User</button>
