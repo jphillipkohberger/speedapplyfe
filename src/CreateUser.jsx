@@ -1,20 +1,32 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.jsx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-function CreateUser() {
+const CreateUser = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   // State variables to store form input values
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
+  
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const togglePasswordConfirmVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   // If already logged in, skip login page
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
-
   const validateForm = () => {
     let newErrors = {};
     if (!Email) newErrors.Email = 'Email is required';
@@ -68,6 +80,7 @@ function CreateUser() {
     // Clear the form after submission
     setEmail('');
     setPassword('');
+    setConfirmPassword('');
   };
 
   return (
@@ -84,20 +97,58 @@ function CreateUser() {
           />
           <p className="error">{errors.Email}</p>
         </div>
-        <div>
-          <label htmlFor="Password">Password:</label>
+        <div style={{ position: 'relative', width: '400px' }}>
+          <label htmlFor="Password">Password:</label>         
           <input
-            type="Password"
+            type={showPassword ? "text" : "password"}
             id="Password"
             value={Password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter password"
+            style={{ width: '100%', paddingRight: '40px' }}
           />
+          <span 
+            onClick={togglePasswordVisibility} 
+            style={{ 
+              position: 'absolute', 
+              right: '10px', 
+              top: '55%', 
+              transform: 'translateY(-50%)', 
+              cursor: 'pointer' 
+            }}
+          >
+            {showPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+          </span> 
           <p className="error">{errors.Password}</p>
+        </div>
+        <div style={{ position: 'relative', width: '400px' }}>
+          <label htmlFor="confirmPassword">Confirm Password:</label>         
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Enter password"
+            style={{ width: '100%', paddingRight: '40px' }}
+          />
+          <span 
+            onClick={togglePasswordConfirmVisibility} 
+            style={{ 
+              position: 'absolute', 
+              right: '10px', 
+              top: '55%', 
+              transform: 'translateY(-50%)', 
+              cursor: 'pointer' 
+            }}
+          >
+            {showConfirmPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+          </span> 
+          <p className="error">{errors.confirmPassword}</p>
         </div>
         <button className="submit-btn" type="submit">Create User</button>
       </form>
     </div>
   );
-}
+};
 
 export default CreateUser;
