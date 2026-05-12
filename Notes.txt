@@ -1,0 +1,3 @@
+5/12/2026
+ADDED Address field to backend User Model
+NEXT Add logic for login if Address field is null force to Profile Page where it can be filled out otherwise go to dashboard

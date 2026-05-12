@@ -16,7 +16,7 @@ export default function Dashboard() {
       <p>Welcome{user?.Email ? `, ${user.Email}` : ""}!</p>
       <form noValidate>
         <p>
-          <button onClick={handleLogout} className="subnit--btn">Log out</button>
+          <button onClick={handleLogout} className="submit-btn">Log out</button>
         </p>
       </form>
     </div>
