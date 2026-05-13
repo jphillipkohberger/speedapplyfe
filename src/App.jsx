@@ -2,6 +2,7 @@ import './App.css'
 import CreateUser from './CreateUser';
 import Login from './Login';
 import Dashboard from './Dashboard';
+import Profile from './Profile';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute.jsx";
@@ -27,10 +28,18 @@ function App() {
         <Route path="/CreateUser" exact element={<CreateUser />}/>
         <Route path="/Login" exact element={<Login />}/>
         <Route
-          path="/dashboard"
+          path="/Dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

@@ -18,9 +18,9 @@ const Login = () => {
   };
 
   // If already logged in, skip login page
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
+  // if (isAuthenticated) {
+  //   return <Navigate to="/dashboard" replace />;
+  // }
 
   const validateForm = () => {
     let newErrors = {};
@@ -44,7 +44,6 @@ const Login = () => {
 
       try {
         login(Email, Password);
-        navigate("/Dashboard", { replace: true });
       } catch (err) {
         errors.Password = 'Login Failed';
         setErrors(errors);

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.jsx";
 
-export default function Dashboard() {
+export default function Profile() {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   return (
     <div className="form-container">
-      <h1>SpeedApply User Dashboard</h1>
+      <h1>SpeedApply User Profile</h1>
       <p>Welcome{user?.Email ? `, ${user.Email}` : ""}!</p>
       <form noValidate>
         <p>

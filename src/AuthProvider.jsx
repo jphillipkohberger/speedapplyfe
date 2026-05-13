@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 
 // context object
 const AuthContext = createContext({
@@ -19,6 +20,8 @@ export function AuthProvider({ children }) {
     const saved = localStorage.getItem("user");
     return saved ? JSON.parse(saved) : null;
   });
+
+  const navigate = useNavigate();
 
   async function login(Email, Password) {
     
@@ -53,6 +56,23 @@ export function AuthProvider({ children }) {
         setUser(user);
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("user", JSON.stringify(user));
+
+        /**
+         * must have three fields filled out 
+         * in profile address, query, min salary
+         */
+
+        console.log("USER LOG");
+        console.log(user);
+
+        if(user.Address == null) {
+          console.log("FIRED");
+          navigate("/Profile", { replace: true });
+        } else {
+          navigate("/Dashboard", { replace: true });
+        }
+
       })
       .catch(error => {
         console.log(error);
