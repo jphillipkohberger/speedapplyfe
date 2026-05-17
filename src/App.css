@@ -33,6 +33,12 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
 .form-group {
   margin-bottom: 1rem;
 }
