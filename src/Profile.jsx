@@ -4,6 +4,7 @@ import { useAuth } from "./AuthProvider.jsx";
 
 export default function Profile() {
 
+  var [UserId, setUserId] = useState('');
   const [Street, setStreet] = useState('');
   const [City, setCity] = useState('');
   const [State, setState] = useState('');
@@ -25,13 +26,45 @@ export default function Profile() {
 
     if (validateForm()) {
 
+      UserId = user.id;
       // Send these fields to API
-      console.log(`Address Submitted: ${Street}, ${City}, ${State} ${Zip}`);
+      console.log(`Address Submitted: ${UserId}, ${Street}, ${City}, ${State} ${Zip}`);
 
       try {
         //API Call
         // login(Email, Password);
-        alert('API Call save address');
+        // alert('API Call save address');
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ UserId, Street, City, State, Zip })
+        };
+
+        console.log(import.meta.env.VITE_API_URL);
+
+        fetch(import.meta.env.VITE_API_URL + '/Api/Users/SaveProfile', requestOptions)
+          .then(response => {
+            if (!response.ok) {
+              console.log(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(data);
+            try {
+              // login(Email, Password);
+            } catch (err) {
+              setErrors(errors);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+
+
       } catch (err) {
         setErrors(errors);
       }
@@ -58,7 +91,7 @@ export default function Profile() {
   return (
     <div className="form-container">
       <h1>SpeedApply User Profile</h1>
-      <p>Welcome{user?.Email ? `, ${user.Email}` : ""}!</p>
+      <p style={{ color: 'black' }}>Welcome{user?.email ? `, ${user.email}` : ""}!</p>
       <h2>Address</h2>
       <form onSubmit={handleSubmit} noValidate>
         <div>
