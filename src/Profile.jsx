@@ -91,7 +91,7 @@ export default function Profile() {
   return (
     <div className="form-container">
       <h1>SpeedApply User Profile</h1>
-      <p style={{ color: 'black' }}>Welcome{user?.email ? `, ${user.email}` : ""}!</p>
+      <p style={{ color: 'black', fontSize: '1.2REM', fontWeight: 'bold' }}>Welcome{user?.email ? `, ${user.email}` : ""}!</p>
       <h2>Address</h2>
       <form onSubmit={handleSubmit} noValidate>
         <div>
