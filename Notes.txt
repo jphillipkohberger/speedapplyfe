@@ -5,3 +5,6 @@ NEXT Add logic for login if Address field is null force to Profile Page where it
 5/13/2026
 ADDED Added logic for Address and others to follow (Query, Min Salary) force fill out Profile if any missing
 NEXT Add other properties and fields(Query, Min Salary)
+
+5/18/26
+NEXT Add resume to profile page
