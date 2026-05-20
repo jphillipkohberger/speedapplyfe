@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.jsx";
 import FileUploader from './FileUploader.jsx'; // Import the file
 
 export default function Profile() {
+
+  const handleClick = e => {
+    e.preventDefault();
+    // Programmatically click the hidden file input
+    hiddenFileInput.current.click();
+  };
 
   var [UserId, setUserId] = useState('');
   const [Street, setStreet] = useState('');
@@ -12,6 +18,8 @@ export default function Profile() {
   const [Zip, setZip] = useState('');
 
   const [errors, setErrors] = useState({});
+
+  const hiddenFileInput = useRef(null);
 
 
   const { user, logout, isAuthenticated } = useAuth();
@@ -135,7 +143,24 @@ export default function Profile() {
           />
           <p className="error">{errors.Zip}</p>
         </div>
-        <FileUploader />
+        <div style={{ position: 'relative', width: '400px' }}>
+          <label htmlFor="Zip"></label>
+          <button 
+            className="submit-btn" 
+            onClick={handleClick}
+            style={{ 
+              backgroundColor: 'black', 
+              color: 'white', 
+            }}
+          >
+            Upload Resume
+          </button>
+          <input
+            type="file"
+            ref={hiddenFileInput}
+            style={{ display: 'none' }} // Hide the default input
+          />
+        </div>
         <p>
           <button onClick={handleSubmit} className="submit-btn">Save</button>
         </p>
