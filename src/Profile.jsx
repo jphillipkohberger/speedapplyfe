@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.jsx";
+import FileUploader from './FileUploader.jsx'; // Import the file
 
 export default function Profile() {
 
@@ -134,6 +135,7 @@ export default function Profile() {
           />
           <p className="error">{errors.Zip}</p>
         </div>
+        <FileUploader />
         <p>
           <button onClick={handleSubmit} className="submit-btn">Save</button>
         </p>
