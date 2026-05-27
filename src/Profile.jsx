@@ -1,7 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider.jsx";
-import FileUploader from './FileUploader.jsx'; // Import the file
 
 export default function Profile() {
 
@@ -17,6 +16,9 @@ export default function Profile() {
   const [State, setState] = useState('');
   const [Zip, setZip] = useState('');
 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
   const [errors, setErrors] = useState({});
 
   const hiddenFileInput = useRef(null);
@@ -29,6 +31,50 @@ export default function Profile() {
     logout();
     navigate("/Login", { replace: true });
   }
+
+  /* 
+  NEED TO TEST THIS FUNCTIONALITY
+  1. User selects a file from the file input
+  2. The file is read as a Blob and a local URL is created for preview
+  3. The preview is displayed in an iframe
+  4. When the component unmounts or the file changes, the local URL is revoked to free memory
+  */
+  // Manage the preview lifetime
+  useEffect(() => {
+    if (!selectedFile) {
+      setPreviewUrl('');
+      return;
+    }
+
+    const blob = new Blob([selectedFile], { type: 'text/plain' });
+    const objectUrl = URL.createObjectURL(blob);
+
+    // Create a local blob URL for the selected file
+    // const objectUrl = URL.createObjectURL(selectedFile);
+    setPreviewUrl(objectUrl);
+
+    // Free memory when the component unmounts or the file changes
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const handleFileChange = (event) => {
+
+    // 1. Extract the file from the input event
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // 2. The File object is already a subclass of Blob.
+    // You can explicitly cast or wrap it into a raw Blob if needed:
+    const pdfBlob = new Blob([file], { type: 'application/pdf' });
+
+    console.log('Original File Object:', file);
+    console.log('Converted PDF Blob Object:', pdfBlob);
+
+    // 3. Optional: Create a local object URL to view or download the blob
+    const generatedUrl = URL.createObjectURL(pdfBlob);
+    setPreviewUrl(generatedUrl);
+
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -144,7 +190,16 @@ export default function Profile() {
           <p className="error">{errors.Zip}</p>
         </div>
         <div style={{ position: 'relative', width: '400px' }}>
-          <label htmlFor="Zip"></label>
+          {/* Render the preview */}
+          <div style={{ border: '1px solid #ccc', padding: '10px', maxWidth: '400px' }}>
+            <iframe
+              src={previewUrl}
+              width="100%"
+              height="auto"
+              title="PDF Preview"
+              style={{ border: '1px solid #ccc' }}
+            />
+          </div>
           <button 
             className="submit-btn" 
             onClick={handleClick}
@@ -159,6 +214,8 @@ export default function Profile() {
             type="file"
             ref={hiddenFileInput}
             style={{ display: 'none' }} // Hide the default input
+            onChange={handleFileChange}
+            accept="application/pdf"
           />
         </div>
         <p>
