@@ -192,6 +192,7 @@ export default function Profile() {
         <div style={{ position: 'relative', width: '400px' }}>
           {/* Render the preview */}
           <div style={{ border: '1px solid #ccc', padding: '10px', maxWidth: '400px' }}>
+          {previewUrl && 
             <iframe
               src={previewUrl}
               width="100%"
@@ -199,6 +200,7 @@ export default function Profile() {
               title="PDF Preview"
               style={{ border: '1px solid #ccc' }}
             />
+          }
           </div>
           <button 
             className="submit-btn" 
