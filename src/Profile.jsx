@@ -87,17 +87,22 @@ export default function Profile() {
 
       try {
         //API Call
-        // login(Email, Password);
-        // alert('API Call save address');
+
+        const formData = new FormData();
+        formData.append('UserId', UserId);
+        formData.append('Street', Street);
+        formData.append('City', City);
+        formData.append('State', State);
+        formData.append('Zip', Zip);
+        formData.append('Resume', previewUrl);
+
         const requestOptions = {
           method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ UserId, Street, City, State, Zip })
+          body: formData
         };
 
         console.log(import.meta.env.VITE_API_URL);
+        console.log(Object.fromEntries(formData));
 
         fetch(import.meta.env.VITE_API_URL + '/Api/Users/SaveProfile', requestOptions)
           .then(response => {
