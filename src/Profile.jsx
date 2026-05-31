@@ -87,43 +87,49 @@ export default function Profile() {
 
       try {
         //API Call
+        fetch(previewUrl)
+        .then(response => response.blob())
+        .then(blobData => {
+         
+          const formData = new FormData();
+          formData.append('UserId', UserId);
+          formData.append('Street', Street);
+          formData.append('City', City);
+          formData.append('State', State);
+          formData.append('Zip', Zip);
+          formData.append('Resume', blobData, 'Resume.pdf');
 
-        const formData = new FormData();
-        formData.append('UserId', UserId);
-        formData.append('Street', Street);
-        formData.append('City', City);
-        formData.append('State', State);
-        formData.append('Zip', Zip);
-        formData.append('Resume', previewUrl);
+          const requestOptions = {
+            method: 'POST',
+            body: formData
+          };
 
-        const requestOptions = {
-          method: 'POST',
-          body: formData
-        };
+          fetch(import.meta.env.VITE_API_URL + '/Api/Users/SaveProfile', requestOptions)
+            .then(response => {
+              if (!response.ok) {
+                console.log(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log(data);
+              try {
 
-        console.log(import.meta.env.VITE_API_URL);
-        console.log(Object.fromEntries(formData));
-
-        fetch(import.meta.env.VITE_API_URL + '/Api/Users/SaveProfile', requestOptions)
-          .then(response => {
-            if (!response.ok) {
-              console.log(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log(data);
-            try {
-              // login(Email, Password);
-            } catch (err) {
-              setErrors(errors);
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
-
+              } catch (err) {
+                setErrors(errors);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        })
+        .then(serverResponse => serverResponse.json())
+        .then(result => {
+          console.log('Upload success:', result);
+        })
+        .catch(error => {
+          console.error('Upload failed:', error);
+        });
 
       } catch (err) {
         setErrors(errors);
