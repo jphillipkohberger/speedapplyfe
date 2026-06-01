@@ -87,6 +87,7 @@ export default function Profile() {
 
       try {
         //API Call
+        //fetch the blob data from the preview URL and send it to the server
         fetch(previewUrl)
         .then(response => response.blob())
         .then(blobData => {
@@ -97,7 +98,7 @@ export default function Profile() {
           formData.append('City', City);
           formData.append('State', State);
           formData.append('Zip', Zip);
-          formData.append('Resume', blobData, 'Resume.pdf');
+          formData.append('Resume', blobData);
 
           const requestOptions = {
             method: 'POST',
