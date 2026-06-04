@@ -52,11 +52,10 @@ export function AuthProvider({ children }) {
       })
       .then(user => {
         console.log(user);
-        setIsAuthenticated(true);
-        setUser(user);
-        localStorage.setItem("isAuthenticated", "true");
+        setIsAuthenticated(JSON.stringify(user));
+        setUser(JSON.stringify(user));
+        localStorage.setItem("isAuthenticated", JSON.stringify(user));
         localStorage.setItem("user", JSON.stringify(user));
-        sessionStorage.setItem("user", JSON.stringify(user));
 
         /**
          * must have three fields filled out 
@@ -66,7 +65,7 @@ export function AuthProvider({ children }) {
         console.log("USER LOG");
         console.log(user);
 
-        if(user.Address == null) {
+        if(user.Address == null || user.MinSal == null) {
           console.log("FIRED");
           navigate("/Profile", { replace: true });
         } else {
