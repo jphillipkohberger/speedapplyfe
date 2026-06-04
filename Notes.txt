@@ -8,3 +8,8 @@ NEXT Add other properties and fields(Query, Min Salary)
 
 5/18/26
 NEXT Add resume to profile page
+
+6/4/26
+NEXT Add logic to AuthProvider.jsx isAuthenticated method to continually check for Address, MinSal, 
+and at least one stored Resume if not user will always be returned to Profile page to set these values 
+otherwise they will go on to  Dashboard where search queries will be ran
