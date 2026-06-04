@@ -15,6 +15,7 @@ export default function Profile() {
   const [City, setCity] = useState('');
   const [State, setState] = useState('');
   const [Zip, setZip] = useState('');
+  const [MinSal, setMinSal] = useState('');
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -83,7 +84,7 @@ export default function Profile() {
 
       UserId = user.id;
       // Send these fields to API
-      console.log(`Address Submitted: ${UserId}, ${Street}, ${City}, ${State} ${Zip}`);
+      console.log(`Address Submitted: ${UserId}, ${Street}, ${City}, ${State} ${Zip} ${MinSal}`);
 
       try {
         //API Call
@@ -98,6 +99,7 @@ export default function Profile() {
           formData.append('City', City);
           formData.append('State', State);
           formData.append('Zip', Zip);
+          formData.append('MinSal', MinSal);
           formData.append('Resume', blobData);
 
           const requestOptions = {
@@ -142,6 +144,7 @@ export default function Profile() {
     setCity('');
     setState('');
     setZip('');
+    setMinSal('');
   };
 
   const validateForm = () => {
@@ -150,7 +153,8 @@ export default function Profile() {
     if (!City) newErrors.City = 'City is required';
     if (!State) newErrors.State = 'State is required';
     if (!Zip) newErrors.Zip = 'Zip is required';
-    
+    if (!MinSal) newErrors.MinSal = 'Minimum Salary is required';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -202,13 +206,23 @@ export default function Profile() {
           <p className="error">{errors.Zip}</p>
         </div>
         <div style={{ position: 'relative', width: '400px' }}>
+          <label htmlFor="MinSal">Minimum Salary:</label>
+          <input
+            type="text"
+            id="MinSal"
+            value={MinSal}
+            onChange={(e) => setMinSal(e.target.value)}
+          />
+          <p className="error">{errors.MinSal}</p>
+        </div>
+        <div style={{ position: 'relative', width: '400px' }}>
           {/* Render the preview */}
-          <div style={{ border: '1px solid #ccc', padding: '10px', maxWidth: '400px' }}>
+          <div style={{ border: '1px solid #ccc', padding: '10px', maxWidth: '400px', height: '181px' }}>
           {previewUrl && 
             <iframe
               src={previewUrl}
               width="100%"
-              height="auto"
+              height="181px"
               title="PDF Preview"
               style={{ border: '1px solid #ccc' }}
             />
