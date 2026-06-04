@@ -115,7 +115,9 @@ export default function Profile() {
               return response.json();
             })
             .then(data => {
+              console.log('Server Response: Success: data:');
               console.log(data);
+              navigate("/Dashboard", { replace: true });
               try {
 
               } catch (err) {
