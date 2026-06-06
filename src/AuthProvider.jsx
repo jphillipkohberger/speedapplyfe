@@ -65,12 +65,7 @@ export function AuthProvider({ children }) {
         console.log("USER LOG");
         console.log(user);
 
-        if(user.Address == null || user.MinSal == null) {
-          console.log("FIRED");
-          navigate("/Profile", { replace: true });
-        } else {
-          navigate("/Dashboard", { replace: true });
-        }
+        navigate("/Dashboard", { replace: true });
 
       })
       .catch(error => {

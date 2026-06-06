@@ -127,13 +127,6 @@ export default function Profile() {
             .catch(error => {
               console.log(error);
             });
-        })
-        .then(serverResponse => serverResponse.json())
-        .then(result => {
-          console.log('Upload success:', result);
-        })
-        .catch(error => {
-          console.error('Upload failed:', error);
         });
 
       } catch (err) {
