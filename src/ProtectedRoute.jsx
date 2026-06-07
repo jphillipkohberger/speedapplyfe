@@ -33,30 +33,36 @@ export default function ProtectedRoute({ children }) {
     var url = import.meta.env.VITE_API_URL + '/Api/Users/' + user.id
   }
 
+  try {
+    
+    const requestOptions = {
+      method: 'GET'
+    };
 
-  const requestOptions = {
-    method: 'GET'
-  };
+    // Re-fetch user data to ensure we have the latest info
+    fetch(url, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          console.log(`HTTP error! status: ${response.status}`);
+          throw new Error(response);
+        }
+        return response.json();
+      })
+      .then(userData => {
+        console.log("Refreshed user data:", userData);
+        if(!location.pathname.includes("/Profile") && (!userData.address || !userData.minSal || userData.files.length == 0)) {
+          console.log("no user");
+          navigate("/Profile", { replace: true });
+        }
+      });
 
-  // Re-fetch user data to ensure we have the latest info
-  fetch(url, requestOptions)
-    .then(response => {
-      if (!response.ok) {
-        console.log(`HTTP error! status: ${response.status}`);
-        throw new Error(response);
-      }
-      return response.json();
-    })
-    .then(userData => {
-      console.log("Refreshed user data:", userData);
-      if(!location.pathname.includes("/Profile") && (!userData.address || !userData.minSal || userData.files.length == 0)) {
-        console.log("no user");
-        navigate("/Profile", { replace: true });
-      }
-    });
-
-  console.log("there is a user")
-  console.log(user);
+    console.log("there is a user")
+    console.log(user);
+  } catch (err) {
+    console.log("Error fetching user data:", err);
+    // If there's an error fetching user data, we can log out the user or navigate to login
+    // navigate("/Login", { replace: true });
+  }
 
   return children;
 }

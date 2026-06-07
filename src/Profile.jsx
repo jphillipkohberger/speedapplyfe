@@ -123,10 +123,8 @@ export default function Profile() {
               } catch (err) {
                 setErrors(errors);
               }
-            })
-            .catch(error => {
-              console.log(error);
             });
+  
         });
 
       } catch (err) {
