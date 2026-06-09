@@ -50,6 +50,8 @@ export default function ProtectedRoute({ children }) {
       })
       .then(userData => {
         console.log("Refreshed user data:", userData);
+        localStorage.setItem("isAuthenticated", JSON.stringify(userData));
+        localStorage.setItem("user", JSON.stringify(userData));
         if(!location.pathname.includes("/Profile") && (!userData.address || !userData.minSal || userData.files.length == 0)) {
           console.log("no user");
           navigate("/Profile", { replace: true });

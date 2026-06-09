@@ -28,7 +28,6 @@ export default function Dashboard() {
         .then(data => {
           console.log('Server Response: Success: data:');
           console.log(data);
-          navigate("/Dashboard", { replace: true });
           try {
 
           } catch (err) {
