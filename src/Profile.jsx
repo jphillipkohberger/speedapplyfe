@@ -33,6 +33,63 @@ export default function Profile() {
     navigate("/Login", { replace: true });
   }
 
+  // Fetch data on page load
+  useEffect(() => {
+    async function pageLoad() {
+      try {
+
+        // Regex pattern using named capture groups
+      const addressRegex = /^(?<street>.+),\s*(?<city>[^,]+),\s*(?<state>[A-Z]{2})\s+(?<zip>\d{5}(-\d{4})?)$/i;
+
+      const match = user.address.match(addressRegex);
+
+      if (match) {
+          // Destructure the variables directly out of the groups object
+          const { street, city, state, zip } = match.groups;
+
+          setStreet(street);
+          setCity(city);
+          setState(state);
+          setZip(zip);
+
+      } else {
+          console.log("Address format did not match the pattern.");
+      }
+
+        setMinSal(user.minSal);
+
+        // add first file found in files
+        // 1. Fetch binary data from the database URL
+        // const blob = user.files[0];
+
+        // // 2. Extract file name from URL or use a fallback
+        // const fileName = blob.name || "downloaded_file";
+
+        // // 3. Construct a standard File object
+        // const loadedFile = new File([blob], fileName);
+
+        // // 4. Update the React state variable
+        // setSelectedFile(loadedFile);
+        // setPreviewUrl(loadedFile);
+
+        // // 5. Bypass the browser read-only restriction on the input element
+        // const dataTransfer = new DataTransfer();
+        // dataTransfer.items.add(loadedFile);
+        
+        // if (hiddenFileInput.current) {
+        //   hiddenFileInput.current.files = dataTransfer.files;
+        // }
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+
+      }
+    }
+
+    pageLoad();
+  }, []); 
+
   /* 
   NEED TO TEST THIS FUNCTIONALITY
   1. User selects a file from the file input
