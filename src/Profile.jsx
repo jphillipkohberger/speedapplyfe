@@ -10,7 +10,7 @@ export default function Profile() {
     hiddenFileInput.current.click();
   };
 
-  var [UserId, setUserId] = useState('');
+  const [UserId, setUserId] = useState('');
   const [Street, setStreet] = useState('');
   const [City, setCity] = useState('');
   const [State, setState] = useState('');
@@ -60,25 +60,15 @@ export default function Profile() {
 
         // add first file found in files
         // 1. Fetch binary data from the database URL
-        // const blob = user.files[0];
+        var path = user.files.at(-1).name;
 
-        // // 2. Extract file name from URL or use a fallback
-        // const fileName = blob.name || "downloaded_file";
+        var fileName = path.substring(path.lastIndexOf('/') + 1);
 
-        // // 3. Construct a standard File object
-        // const loadedFile = new File([blob], fileName);
+        console.log(fileName);
 
-        // // 4. Update the React state variable
-        // setSelectedFile(loadedFile);
-        // setPreviewUrl(loadedFile);
-
-        // // 5. Bypass the browser read-only restriction on the input element
-        // const dataTransfer = new DataTransfer();
-        // dataTransfer.items.add(loadedFile);
-        
-        // if (hiddenFileInput.current) {
-        //   hiddenFileInput.current.files = dataTransfer.files;
-        // }
+        // set preview URL to the API endpoint that serves the file
+        setPreviewUrl(import.meta.env.VITE_API_URL + '/Api/Files/GetFileResume/' + fileName);
+        setSelectedFile(import.meta.env.VITE_API_URL + '/Api/Files/GetFileResume/' + fileName);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -98,22 +88,22 @@ export default function Profile() {
   4. When the component unmounts or the file changes, the local URL is revoked to free memory
   */
   // Manage the preview lifetime
-  useEffect(() => {
-    if (!selectedFile) {
-      setPreviewUrl('');
-      return;
-    }
+  // useEffect(() => {
+  //   if (!selectedFile) {
+  //     setPreviewUrl('');
+  //     return;
+  //   }
 
-    const blob = new Blob([selectedFile], { type: 'text/plain' });
-    const objectUrl = URL.createObjectURL(blob);
+  //   const blob = new Blob([selectedFile], { type: 'text/plain' });
+  //   const objectUrl = URL.createObjectURL(blob);
 
-    // Create a local blob URL for the selected file
-    // const objectUrl = URL.createObjectURL(selectedFile);
-    setPreviewUrl(objectUrl);
+  //   // Create a local blob URL for the selected file
+  //   // const objectUrl = URL.createObjectURL(selectedFile);
+  //   setPreviewUrl(objectUrl);
 
-    // Free memory when the component unmounts or the file changes
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  //   // Free memory when the component unmounts or the file changes
+  //   return () => URL.revokeObjectURL(objectUrl);
+  // }, [selectedFile]);
 
   const handleFileChange = (event) => {
 
@@ -139,9 +129,27 @@ export default function Profile() {
 
     if (validateForm()) {
 
-      UserId = user.id;
+      setUserId(user.id);
       // Send these fields to API
       console.log(`Address Submitted: ${UserId}, ${Street}, ${City}, ${State} ${Zip} ${MinSal}`);
+
+      if (typeof user === "string") {
+        try {
+          const parsed = JSON.parse(user);
+          // parsed not JSON throw error bail out
+          if (!parsed || typeof parsed !== "object") {
+            console.log("Parsed user is not an object:", parsed);
+            throw new Error("Parsed user is not an object");
+          }
+          // parsed is JSON and an object, we can use it
+          var id = parsed.id
+        } catch (e) {
+          return "Regular string (not JSON)";
+        }
+      }
+      else if (typeof user === "object") {
+        var id = user.id
+      }
 
       try {
         //API Call
@@ -151,7 +159,7 @@ export default function Profile() {
         .then(blobData => {
          
           const formData = new FormData();
-          formData.append('UserId', UserId);
+          formData.append('UserId', id);
           formData.append('Street', Street);
           formData.append('City', City);
           formData.append('State', State);
